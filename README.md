@@ -1,4 +1,4 @@
-# Restaurante App - Semana 8
+# Restaurante App - Semana 9
 
 ## Estudiante
 
@@ -6,17 +6,16 @@ Viviana Mota Alzamora
 
 ## Descripción
 
-Este proyecto corresponde a la Semana 8 de Programación Orientada a Objetos. El sistema permite registrar productos, bebidas y clientes desde un menú interactivo en consola, además de listar los registros almacenados durante la ejecución.
+Sistema de consola en Python para administrar productos y usuarios de un restaurante. Permite registrar, buscar, actualizar, eliminar y listar productos; registrar y listar usuarios; y mostrar categorías únicas.
 
-## Estructura del proyecto
+## Estructura
 
 ```text
 restaurante_app/
 ├── modelos/
 │   ├── __init__.py
 │   ├── producto.py
-│   ├── bebida.py
-│   └── cliente.py
+│   └── usuario.py
 ├── servicios/
 │   ├── __init__.py
 │   └── restaurante.py
@@ -24,31 +23,31 @@ restaurante_app/
 README.md
 ```
 
-## Responsabilidad de cada clase
+## Responsabilidades
 
-- `Producto`: representa los datos comunes de los productos.
-- `Bebida`: hereda de `Producto` y agrega tamaño y tipo de envase.
-- `Cliente`: representa únicamente la información de un cliente.
-- `Restaurante`: administra las listas, registra información y evita duplicados.
-- `main.py`: coordina la interacción con el usuario mediante consola.
+- `Producto`: representa un producto mediante código, nombre, categoría y precio.
+- `Usuario`: representa una persona mediante identificación, nombre y correo.
+- `Restaurante`: administra las colecciones y las operaciones del sistema.
+- `main.py`: presenta el menú, solicita los datos y llama al servicio.
 
-## Principios SOLID aplicados
+## Estructuras de datos
 
-### Responsabilidad única (SRP)
+- `list`: almacena las colecciones dinámicas de productos y usuarios.
+- `tuple`: mantiene estables las opciones de `OPCIONES_MENU`.
+- `dict`: relaciona los números del menú con las funciones correspondientes.
+- `set`: obtiene las categorías de productos sin duplicados.
 
-Cada clase cumple una tarea específica. Las entidades representan información, el servicio administra las colecciones y `main.py` se encarga de la interacción.
-
-### Abierto/cerrado (OCP)
-
-La clase `Bebida` amplía el sistema mediante herencia sin modificar la lógica general del servicio.
-
-### Sustitución de Liskov (LSP)
-
-Los objetos `Producto` y `Bebida` se almacenan en una misma lista y responden al método `mostrar_informacion()` sin condiciones específicas.
+Las cuatro estructuras cumplen una función real dentro del programa.
 
 ## Validaciones
 
-El sistema valida campos vacíos, precios inválidos, códigos de productos repetidos e identificaciones de clientes duplicadas.
+- Campos de texto obligatorios.
+- Precio numérico mayor que cero.
+- Formato básico de correo electrónico.
+- Códigos de productos no duplicados.
+- Identificaciones de usuarios no duplicadas.
+- Opciones incorrectas del menú controladas.
+- Operaciones sobre productos inexistentes controladas.
 
 ## Ejecución
 
@@ -60,4 +59,4 @@ python main.py
 
 ## Reflexión
 
-Aplicar los principios SOLID ayuda a mantener el proyecto organizado y facilita la incorporación de nuevas clases sin alterar innecesariamente el código existente.
+Seleccionar una estructura adecuada permite representar mejor cada necesidad. Las listas facilitan administrar colecciones que cambian; las tuplas conservan información estable; los diccionarios relacionan claves con acciones; y los conjuntos eliminan duplicados. Esto mejora la claridad y el mantenimiento del sistema.

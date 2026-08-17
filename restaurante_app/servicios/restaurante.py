@@ -1,5 +1,5 @@
-from modelos.cliente import Cliente
 from modelos.producto import Producto
+from modelos.usuario import Usuario
 
 
 class Restaurante:
@@ -7,38 +7,64 @@ class Restaurante:
 
     def __init__(self) -> None:
         self._productos: list[Producto] = []
-        self._clientes: list[Cliente] = []
+        self._usuarios: list[Usuario] = []
 
     def registrar_producto(self, producto: Producto) -> tuple[bool, str]:
         if self._existe_codigo_producto(producto.codigo):
             return False, "Ya existe un producto con ese código."
-
         self._productos.append(producto)
         return True, "Producto registrado correctamente."
+
+    def buscar_producto(self, codigo: str) -> Producto | None:
+        codigo_buscado = codigo.strip().lower()
+        for producto in self._productos:
+            if producto.codigo.lower() == codigo_buscado:
+                return producto
+        return None
+
+    def actualizar_producto(
+        self,
+        codigo: str,
+        nuevo_nombre: str,
+        nueva_categoria: str,
+        nuevo_precio: float,
+    ) -> tuple[bool, str]:
+        producto = self.buscar_producto(codigo)
+        if producto is None:
+            return False, "No se encontró un producto con ese código."
+        producto.nombre = nuevo_nombre.strip()
+        producto.categoria = nueva_categoria.strip()
+        producto.precio = nuevo_precio
+        return True, "Producto actualizado correctamente."
+
+    def eliminar_producto(self, codigo: str) -> tuple[bool, str]:
+        producto = self.buscar_producto(codigo)
+        if producto is None:
+            return False, "No se encontró un producto con ese código."
+        self._productos.remove(producto)
+        return True, "Producto eliminado correctamente."
 
     def listar_productos(self) -> list[str]:
         return [producto.mostrar_informacion() for producto in self._productos]
 
-    def registrar_cliente(self, cliente: Cliente) -> tuple[bool, str]:
-        if self._existe_identificacion_cliente(cliente.identificacion):
-            return False, "Ya existe un cliente con esa identificación."
+    def obtener_categorias(self) -> set[str]:
+        return {producto.categoria for producto in self._productos}
 
-        self._clientes.append(cliente)
-        return True, "Cliente registrado correctamente."
+    def registrar_usuario(self, usuario: Usuario) -> tuple[bool, str]:
+        if self._existe_identificacion_usuario(usuario.identificacion):
+            return False, "Ya existe un usuario con esa identificación."
+        self._usuarios.append(usuario)
+        return True, "Usuario registrado correctamente."
 
-    def listar_clientes(self) -> list[str]:
-        return [cliente.mostrar_informacion() for cliente in self._clientes]
+    def listar_usuarios(self) -> list[str]:
+        return [usuario.mostrar_informacion() for usuario in self._usuarios]
 
     def _existe_codigo_producto(self, codigo: str) -> bool:
-        codigo_buscado = codigo.strip().lower()
-        return any(
-            producto.codigo.lower() == codigo_buscado
-            for producto in self._productos
-        )
+        return self.buscar_producto(codigo) is not None
 
-    def _existe_identificacion_cliente(self, identificacion: str) -> bool:
+    def _existe_identificacion_usuario(self, identificacion: str) -> bool:
         identificacion_buscada = identificacion.strip().lower()
         return any(
-            cliente.identificacion.lower() == identificacion_buscada
-            for cliente in self._clientes
+            usuario.identificacion.lower() == identificacion_buscada
+            for usuario in self._usuarios
         )
